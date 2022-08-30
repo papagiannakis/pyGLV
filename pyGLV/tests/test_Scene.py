@@ -14,7 +14,7 @@ from turtle import width
 import unittest
 
 import numpy as np
-from sympy import true
+# from sympy import true
 
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
@@ -22,7 +22,7 @@ from pyECSS.Component import BasicTransform, Camera, RenderMesh
 from pyECSS.System import System, TransformSystem, CameraSystem, RenderSystem
 from pyGLV.GL.Scene import Scene
 from pyECSS.ECSSManager import ECSSManager
-from pyglGA.GUI.Viewer import SDL2Window, ImGUIDecorator, RenderGLStateSystem
+from pyGLV.GUI.Viewer import SDL2Window, ImGUIDecorator, RenderGLStateSystem
 
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
