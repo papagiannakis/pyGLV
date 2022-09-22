@@ -8,11 +8,11 @@ The Shader Compoment class is the dedicated to a specific type of data container
 that of assembling, using and destroying OpenGL API shader programs
 
 Based on the Composite and Iterator design patterns:
-	• https://refactoring.guru/design-patterns/composite
-    • https://github.com/faif/python-patterns/blob/master/patterns/structural/composite.py
-    • https://refactoring.guru/design-patterns/iterator
-    • https://github.com/faif/python-patterns/blob/master/patterns/behavioral/iterator.py
 
+* https://refactoring.guru/design-patterns/composite
+* https://github.com/faif/python-patterns/blob/master/patterns/structural/composite.py
+* https://refactoring.guru/design-patterns/iterator
+* https://github.com/faif/python-patterns/blob/master/patterns/behavioral/iterator.py
 
 """
 

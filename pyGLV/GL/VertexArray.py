@@ -8,11 +8,11 @@ The VertexArray Compoment class is the dedicated to a specific type of data cont
 that of assembling, using and destroying OpenGL API vertex array and buffer objects
 
 Based on the Composite and Iterator design patterns:
-	• https://refactoring.guru/design-patterns/composite
-    • https://github.com/faif/python-patterns/blob/master/patterns/structural/composite.py
-    • https://refactoring.guru/design-patterns/iterator
-    • https://github.com/faif/python-patterns/blob/master/patterns/behavioral/iterator.py
 
+* https://refactoring.guru/design-patterns/composite
+* https://github.com/faif/python-patterns/blob/master/patterns/structural/composite.py
+* https://refactoring.guru/design-patterns/iterator
+* https://github.com/faif/python-patterns/blob/master/patterns/behavioral/iterator.py
 
 """
 
