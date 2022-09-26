@@ -149,6 +149,7 @@ class SDL2Window(RenderWindow):
             
         #OpenGL state variables
         self._wireframeMode = False
+        self._colorEditor = 0.0, 0.0, 0.0
         self._myCamera = np.identity(4)
              
     @property
@@ -230,7 +231,9 @@ class SDL2Window(RenderWindow):
         Main display window method to be called standalone or from within a concrete Decorator
         """
         #GPTODO make background clear color as parameter at class level
-        gl.glClearColor(0.0,0.0,0.0,1.0)
+
+            
+        gl.glClearColor(*self._colorEditor, 1.0)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         gl.glDisable(gl.GL_CULL_FACE)
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -380,7 +383,7 @@ class ImGUIDecorator(RenderDecorator):
         self._wireframeMode = False
         self._changed = False 
         self._checkbox = False 
-        self._colorEditor = (0.0, 0.0, 0.0)
+        self._colorEditor = wrapee._colorEditor
         self._eye = (2.5, 2.5, 2.5)
         self._target = (0.0, 0.0, 0.0) 
         self._up = (0.0, 1.0, 0.0)
@@ -423,6 +426,8 @@ class ImGUIDecorator(RenderDecorator):
         ImGUI decorator display: calls wrapee (RenderWindow::display) as well as extra ImGUI widgets
         """
         self.wrapeeWindow.display()
+        gl.glClearColor(*self._colorEditor, 1.0)
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         #render the ImGUI widgets
         self.extra()
         #draw scenegraph tree widget
@@ -455,6 +460,8 @@ class ImGUIDecorator(RenderDecorator):
         # render imgui (after 3D scene and just before the SDL double buffer swap window)
         imgui.render()
         self._imguiRenderer.render(imgui.get_draw_data())
+
+
         # call the SDL window window swapping in the end of the scene as final render action
         self.wrapeeWindow.display_post()
         
