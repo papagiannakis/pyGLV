@@ -178,6 +178,7 @@ class TestEvent(unittest.TestCase):
         
         print("TestEvent:test_notify_ImGUIDecorator() END".center(100, '-'))
         
+    @unittest.skip("test_renderCubeWithEvents is legacy code, skipping the test")
     def test_renderCubeWithEvents(self):
         """a simple Cube with also some event handling
         """
