@@ -22,7 +22,7 @@ setup(
     author_email = "papagian@csd.uoc.gr",
     maintainer='Manos Kamarianakis',
     maintainer_email='m.kamarianakis@gmail.com',
-    url='url = http://george.papagiannakis.org',
+    url='https://github.com/papagiannakis/pyGLV',
     keywords = ['ECS','Scenegraph','Python design patterns','Computer Graphics'],
     package_dir={'pyGLV':'pyGLV'},
     packages=find_packages(exclude=["tests","tests.*", "tests/*" ]),
@@ -54,8 +54,7 @@ setup(
     ],
     project_urls={
         "Homepage" : "https://github.com/papagiannakis/pyGLV",
-        "Bug Tracker": "https://github.com/papagiannakis/pyGLV",
-        "Source Code": "https://github.com/papagiannakis/pyGLV",
+        "Documentation" : "https://pyglv.readthedocs.io",
     },
 
     python_requires=">=3.9,<3.10",
