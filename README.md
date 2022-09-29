@@ -6,13 +6,6 @@ A python, pure software design pattern based package that used plain and simple 
 
 ---
 
-### *Copyright 2021-2022 Dr. George Papagiannakis,  papagian@csd.uoc.gr*
-
-### *All Rights Reserved*
-
-### *University of Crete & Foundation for Research & Technology - Hellas (FORTH)*
-
----
 
 > **Why GLV?**:
 >
@@ -53,6 +46,13 @@ The following software design patterns are employed:
   
 ---
 
+### *Copyright 2021-2022 Dr. George Papagiannakis,  papagian@csd.uoc.gr*
+
+### *All Rights Reserved*
+
+### *University of Crete & Foundation for Research & Technology - Hellas (FORTH)*
+
+---
 ## Licensing
 
 pyGLV is licensed under the Apache License, Version 2.0. See
