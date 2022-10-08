@@ -11,8 +11,6 @@ from pyGLV.GUI.Viewer import SDL2Window, ImGUIDecorator
 
 
 gWindow = SDL2Window()
-gGUI = ImGUIDecorator(gWindow)
-
 gWindow.init()
 
 
