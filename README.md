@@ -24,17 +24,9 @@ The following software design patterns are employed:
   pip install pyglv
   ```
 
-- For `development`: via `github`
+More information can be found in [Documentation](https://pyglv.readthedocs.io) and specifically at 
+[Installation](https://pyglv.readthedocs.io/en/latest/installation.html).
 
-  ```
-  git clone .......
-  ```
-
-  and in order to install it `locally` via `pip`:
-
-  ```
-  python -m pip install -e .
-  ```
 
 ## Contributors
 
