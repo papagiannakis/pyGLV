@@ -15,6 +15,7 @@ from __future__         import annotations
 from abc                import ABC, abstractmethod
 from typing             import List, Dict, Any
 from collections.abc    import Iterable, Iterator
+from sys import platform
 
 import sdl2
 import sdl2.ext
@@ -174,7 +175,7 @@ class SDL2Window(RenderWindow):
             print("SDL2 could not be initialised! SDL Error: ", sdl2.SDL_GetError())
             exit(1)
         
-        #setting OpenGL attributes for the GL state and context 4.1
+        #setting OpenGL attributes for the GL state
         sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_FLAGS,
                                  sdl2.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG
                                  )
@@ -182,13 +183,23 @@ class SDL2Window(RenderWindow):
                                  sdl2.SDL_GL_CONTEXT_PROFILE_CORE
                                  )
         sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)
+        
         sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_ACCELERATED_VISUAL, 1)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLESAMPLES, 16)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, 4)
-        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 1)
+        
+
+        
+        if platform == "linux" or platform == "linux2":
+            # linux
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, 3)
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 2)
+        else:
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, 4)
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 1) 
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)   
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLESAMPLES, 16)        
+        
         sdl2.SDL_SetHint(sdl2.SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK, b"1")
         sdl2.SDL_SetHint(sdl2.SDL_HINT_VIDEO_HIGHDPI_DISABLED, b"1")
         
@@ -212,7 +223,7 @@ class SDL2Window(RenderWindow):
         sdl2.SDL_GL_MakeCurrent(self._gWindow, self._gContext)
         if sdl2.SDL_GL_SetSwapInterval(1) < 0:
             print("Warning: Unable to set VSync! SDL Error: " + sdl2.SDL_GetError())
-            exit(1)
+            # exit(1)
         #obtain the GL versioning system info
         self._gVersionLabel = f'OpenGL {gl.glGetString(gl.GL_VERSION).decode()} GLSL {gl.glGetString(gl.GL_SHADING_LANGUAGE_VERSION).decode()} Renderer {gl.glGetString(gl.GL_RENDERER).decode()}'
         print(self._gVersionLabel)
