@@ -57,5 +57,5 @@ setup(
         "Documentation" : "https://pyglv.readthedocs.io",
     },
 
-    python_requires=">=3.9,<3.10",
+    python_requires=">=3.8,<3.10",
 )
