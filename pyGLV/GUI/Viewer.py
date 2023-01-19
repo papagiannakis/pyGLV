@@ -33,6 +33,7 @@ from pyECSS.System import System
 from pyECSS.Component import BasicTransform
 import numpy as np
 
+
 class RenderWindow(ABC):
     """
     The Abstract base class of the Viewer GUI/Display sub-system of pyglGA
@@ -107,7 +108,7 @@ class SDL2Window(RenderWindow):
     :type RenderWindow: [type]
     """
     
-    def __init__(self, windowWidth = None, windowHeight = None, windowTitle = None, scene = None, eventManager = None):
+    def __init__(self, windowWidth = None, windowHeight = None, windowTitle = None, scene = None, eventManager = None, openGLversion = 4):
         """Constructor SDL2Window for basic SDL2 parameters
 
         :param windowWidth: [description], defaults to None
@@ -122,6 +123,8 @@ class SDL2Window(RenderWindow):
         self._gWindow = None
         self._gContext = None
         self._gVersionLabel = "None"
+
+        self.openGLversion = openGLversion
         
         if windowWidth is None:
             self._windowWidth = 1024
@@ -187,17 +190,30 @@ class SDL2Window(RenderWindow):
         sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_ACCELERATED_VISUAL, 1)
         
 
+        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
+        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)   
+        sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
+
         
-        if platform == "linux" or platform == "linux2":
-            # linux
+        if self.openGLversion==3:
+            print("="*24)
+            print("Using OpenGL version 3.2")
+            print("="*24)
             sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, 3)
-            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 2)
-        else:
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 2)    
+        else: 
+            print("="*24)
+            print("Using OpenGL version 4.1")
+            print("="*24)
             sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, 4)
-            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 1) 
-            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
-            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)   
-            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
+            sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, 1)
+
+                     
+            
+        # Linux doesn't like SDL_GL_MULTISAMPLESAMPLES
+        if platform == "linux" or platform == "linux2":
+            pass
+        else:
             sdl2.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLESAMPLES, 16)        
         
         sdl2.SDL_SetHint(sdl2.SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK, b"1")
@@ -733,16 +749,13 @@ class RenderGLStateSystem(System):
         if event.name == "OnUpdateCamera":
             print(f"OnUpdateCamera: RenderGLStateSystem():apply2SDLWindow() actuator system for: {event}")
             sdlWindow._myCamera = event.value
-            # print("Manos3: ", type(sdlWindow))
-            # print("MANOS2: ", sdlWindow._myCamera)
         # MANOS - END
         
 
 
 if __name__ == "__main__":
-    # The client code.
-    
-    gWindow = SDL2Window()
+    # # The client code.
+    gWindow = SDL2Window(openGLversion=3) # uses openGL version 3.2 instead of the default 4.1
     gWindow.init()
     gWindow.init_post()
     running = True
