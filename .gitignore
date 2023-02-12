@@ -134,3 +134,4 @@ dmypy.json
 
 # imgui preferences file
 imgui.ini
+.DS_Store
