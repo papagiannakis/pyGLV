@@ -226,7 +226,8 @@ class SDL2Window(RenderWindow):
                                               self._windowWidth,
                                               self._windowHeight,
                                             #   sdl2.SDL_WINDOW_ALLOW_HIGHDPI)
-                                              sdl2.SDL_WINDOW_OPENGL)
+                                              sdl2.SDL_WINDOW_OPENGL,
+                                              sdl2.SDL_WINDOW_RESIZABLE)
         if self._gWindow is None:
             print("Window could not be created! SDL Error: ", sdl2.SDL_GetError())
             exit(1)
@@ -665,7 +666,9 @@ class ImGUIecssDecorator(ImGUIDecorator):
                 except StopIteration:
                     done_traversing = True
                 else:
-                    if imgui.tree_node(comp.name + " | " + str(comp.id), imgui.TREE_NODE_OPEN_ON_ARROW):
+                    if imgui.tree_node(comp.name, imgui.TREE_NODE_OPEN_ON_ARROW): 
+                    # removing id to have a nice looking tree
+                    # if imgui.tree_node(comp.name + " | " + str(comp.id), imgui.TREE_NODE_OPEN_ON_ARROW):
                         _, selected = imgui.selectable(comp.__str__(), True)
                         if selected:
                             if comp != self.selected: # First time selecting it. Set trs values to GUI;
