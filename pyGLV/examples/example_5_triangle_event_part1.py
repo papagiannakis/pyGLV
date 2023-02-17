@@ -56,7 +56,7 @@ orthoCam = scene.world.addComponent(entityCam2, Camera(util.ortho(-100.0, 100.0,
 
 node4 = scene.world.createEntity(Entity(name="node4"))
 scene.world.addEntityChild(rootEntity, node4)
-trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.identity()))
+trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.rotate([1,1,1], 20)))
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="mesh4"))
 
 
@@ -177,7 +177,7 @@ if showaxes :
 
 running = True
 # MAIN RENDERING LOOP
-scene.init(imgui=True, windowWidth = 1024, windowHeight = 768, windowTitle = "pyglGA test_renderTriangle_shader",openGLversion = 3)
+scene.init(imgui=True, windowWidth = 1024, windowHeight = 768, windowTitle = "Elements: Using the Scenegraph",openGLversion = 3)
 
 # pre-pass scenegraph to initialise all GL context dependent geometry, shader classes
 # needs an active GL context

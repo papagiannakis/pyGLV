@@ -501,11 +501,10 @@ class ImGUIDecorator(RenderDecorator):
         
         #start new ImGUI frame context
         imgui.new_frame()
-        
         #demo ImGUI window with all widgets
         # imgui.show_test_window()
         #new custom imgui window
-        imgui.begin("pyglGA ImGUI window", True)
+        imgui.begin("Elements ImGUI window", True)
         #labels inside the window
         imgui.text("PyImgui + PySDL2 integration successful!")
         imgui.text(self._wrapeeWindow._gVersionLabel)
@@ -614,42 +613,73 @@ class ImGUIecssDecorator(ImGUIDecorator):
         if sceneRoot is None:
             sceneRoot = "ECSS Root Entity"
         
-        imgui.begin("ECSS graph")
-        imgui.columns(2,"Properties")
-        # below is a recursive call to build-up the whole scenegraph as ImGUI tree
-        if imgui.tree_node(sceneRoot, imgui.TREE_NODE_OPEN_ON_ARROW):
-            self.drawNode(self.wrapeeWindow.scene.world.root)
-            imgui.tree_pop()
-        imgui.next_column()
-        imgui.text("Properties")
-        imgui.separator()
+        twoColumn = False
 
+        if twoColumn:
+            # 2 Column Version
+            imgui.begin("ECSS graph")
+            imgui.columns(2,"Properties")
+            if imgui.tree_node(sceneRoot, imgui.TREE_NODE_OPEN_ON_ARROW):
+                self.drawNode(self.wrapeeWindow.scene.world.root)
+                imgui.tree_pop()
+            imgui.next_column()
+            imgui.text("Properties")
+            imgui.separator()
+        else:
+            imgui.begin("ECSS graph")
+            imgui.columns(1,"Properties")
+            # below is a recursive call to build-up the whole scenegraph as ImGUI tree
+            # if imgui.tree_node(sceneRoot, imgui.TREE_NODE_OPEN_ON_ARROW):
+                # self.drawNode(self.wrapeeWindow.scene.world.root)
+                # imgui.tree_pop()
+            # imgui.next_column()
+            imgui.text("Properties")
+            imgui.separator()
+
+
+        # smallerTRSgui = True
         #TRS sample
         # if(isinstance(self.selected, BasicTransform)):
+
         if imgui.tree_node("Translation", imgui.TREE_NODE_OPEN_ON_ARROW):
-            changed, value = imgui.slider_float("X", self.translation["x"], -3, 3, "%.01f", 1);
-            self.translation["x"] = value;
-            changed, value = imgui.slider_float("Y", self.translation["y"], -3, 3, "%.01f", 1);
-            self.translation["y"] = value;
-            changed, value = imgui.slider_float("Z", self.translation["z"], -3, 3, "%.01f", 1);
-            self.translation["z"] = value;
+            # changed, value = imgui.slider_float("X", self.translation["x"], -3, 3, "%.01f", 1);
+            # self.translation["x"] = value;
+            # changed, value = imgui.slider_float("Y", self.translation["y"], -3, 3, "%.01f", 1);
+            # self.translation["y"] = value;
+            # changed, value = imgui.slider_float("Z", self.translation["z"], -3, 3, "%.01f", 1);
+            # self.translation["z"] = value;
+            changed, value = imgui.drag_float3("X,Y,Z",self.translation["x"],self.translation["y"],self.translation["z"], 0.01, -30, 30, "%.001f", 1);
+            self.translation["x"],self.translation["y"],self.translation["z"] = value[0],value[1], value[2]
             imgui.tree_pop();
         if imgui.tree_node("Rotation", imgui.TREE_NODE_OPEN_ON_ARROW):
-            changed, value = imgui.slider_float("X", self.rotation["x"], -90, 90, "%.1f", 1);
-            self.rotation["x"] = value;
-            changed, value = imgui.slider_float("Y", self.rotation["y"], -90, 90, "%.1f", 1);
-            self.rotation["y"] = value;
-            changed, value = imgui.slider_float("Z", self.rotation["z"], -90, 90, "%.1f", 1);
-            self.rotation["z"] = value;
+            # changed, value = imgui.slider_float("X", self.rotation["x"], -90, 90, "%.1f", 1);
+            # self.rotation["x"] = value;
+            # changed, value = imgui.slider_float("Y", self.rotation["y"], -90, 90, "%.1f", 1);
+            # self.rotation["y"] = value;
+            # changed, value = imgui.slider_float("Z", self.rotation["z"], -90, 90, "%.1f", 1);
+            # self.rotation["z"] = value;
+            changed, value = imgui.drag_float3("X,Y,Z",self.rotation["x"],self.rotation["y"],self.rotation["z"], 1, -180, 180, "%.1f", 1);
+            self.rotation["x"],self.rotation["y"],self.rotation["z"] = value[0],value[1], value[2]
             imgui.tree_pop();
         if imgui.tree_node("Scale", imgui.TREE_NODE_OPEN_ON_ARROW):
-            changed, value = imgui.slider_float("X", self.scale["x"], 0, 3, "%.01f", 1);
-            self.scale["x"] = value;
-            changed, value = imgui.slider_float("Y", self.scale["y"], 0, 3, "%.01f", 1);
-            self.scale["y"] = value;
-            changed, value = imgui.slider_float("Z", self.scale["z"], 0, 3, "%.01f", 1);
-            self.scale["z"] = value;
+            # changed, value = imgui.slider_float("X", self.scale["x"], 0, 3, "%.01f", 1);
+            # self.scale["x"] = value;
+            # changed, value = imgui.slider_float("Y", self.scale["y"], 0, 3, "%.01f", 1);
+            # self.scale["y"] = value;
+            # changed, value = imgui.slider_float("Z", self.scale["z"], 0, 3, "%.01f", 1);
+            # self.scale["z"] = value;
+            changed, value = imgui.drag_float3("X,Y,Z",self.scale["x"],self.scale["y"],self.scale["z"], 0.01, 0, 4, "%.01f", 1);
+            self.scale["x"],self.scale["y"],self.scale["z"] = value[0],value[1], value[2]
             imgui.tree_pop();
+
+        
+        if twoColumn:
+            pass
+        else:
+            imgui.separator()
+            if imgui.tree_node(sceneRoot, imgui.TREE_NODE_OPEN_ON_ARROW):
+                self.drawNode(self.wrapeeWindow.scene.world.root)
+                imgui.tree_pop()
 
         imgui.end()
         
@@ -666,11 +696,13 @@ class ImGUIecssDecorator(ImGUIDecorator):
                 except StopIteration:
                     done_traversing = True
                 else:
-                    if imgui.tree_node(comp.name, imgui.TREE_NODE_OPEN_ON_ARROW): 
-                    # removing id to have a nice looking tree
-                    # if imgui.tree_node(comp.name + " | " + str(comp.id), imgui.TREE_NODE_OPEN_ON_ARROW):
+                    # using ## creates unique labels, without showing anything after ##
+                    # see: https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#q-how-can-i-have-multiple-widgets-with-the-same-label
+                    if imgui.tree_node(comp.name + "##" + str(comp.id), imgui.TREE_NODE_OPEN_ON_ARROW):
+                        imgui.text(comp.name)
                         _, selected = imgui.selectable(comp.__str__(), True)
                         if selected:
+
                             if comp != self.selected: # First time selecting it. Set trs values to GUI;
                                 self.selected = comp;
                                 if isinstance(comp, BasicTransform):
