@@ -11,8 +11,9 @@ gGUI = ImGUIDecorator(gWindow)
 
 gGUI.init() #calls ImGUIDecorator::init()-->SDL2Window::init()
 
+
+
 running = True
-# MAIN RENDERING LOOP
 while running:
   gGUI.display()
   running = gGUI.event_input_process(running)

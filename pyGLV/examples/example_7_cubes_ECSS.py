@@ -6,7 +6,7 @@ glGA SDK v2021.0.5 ECSS (Entity Component System in a Scenegraph)
     
 The classes below are all related to the GUI and Display of 3D 
 content using the OpenGL, GLSL and SDL2, ImGUI APIs, on top of the
-pyglGA ECSS package
+Elements ECSS package
 """
 
 from __future__         import annotations

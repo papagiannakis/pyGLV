@@ -1,10 +1,4 @@
-"""
-First time to test a RenderSystem in a Scene with Shader and VertexArray components
-"""
-
-
 import numpy as np
-
 
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
@@ -15,40 +9,16 @@ from pyGLV.GL.Scene import Scene
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
 
-from OpenGL.GL import GL_LINES
 
-import OpenGL.GL as gl
-
-
-
-"""
-Scenegraph for unit tests
-
-root
-    |---------------------------|           
-    entityCam1,                 node4,      
-    |-------|                    |--------------|----------|--------------|           
-    trans1, entityCam2           trans4,        mesh4,     shaderDec4     vArray4
-            |                               
-            ortho, trans2                   
-                                                        
-                                                        
-    
-"""
-        
 
 scene = Scene()    
 
 # Scenegraph with Entities, Components
 rootEntity = scene.world.createEntity(Entity(name="RooT"))
+
 entityCam1 = scene.world.createEntity(Entity(name="entityCam1"))
 scene.world.addEntityChild(rootEntity, entityCam1)
 trans1 = scene.world.addComponent(entityCam1, BasicTransform(name="trans1", trs=util.identity()))
-
-# entityCam2 = scene.world.createEntity(Entity(name="entityCam2"))
-# scene.world.addEntityChild(entityCam1, entityCam2)
-# trans2 = scene.world.addComponent(entityCam2, BasicTransform(name="trans2", trs=util.identity()))
-# orthoCam = scene.world.addComponent(entityCam2, Camera(util.ortho(-100.0, 100.0, -100.0, 100.0, 1.0, 100.0), "orthoCam","Camera","500"))
 
 node4 = scene.world.createEntity(Entity(name="node4"))
 scene.world.addEntityChild(rootEntity, node4)
@@ -95,24 +65,6 @@ indexCube = np.array((1,0,3, 1,3,2,
 
 
 
-# Systems
-transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
-camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
-renderUpdate = scene.world.createSystem(RenderGLShaderSystem())
-initUpdate = scene.world.createSystem(InitGLShaderSystem())
-    
-
-
-model = util.translate(0.0,0.0,0.5)
-eye = util.vec(1.0, 1.0, 1.0)
-target = util.vec(0,0,0)
-up = util.vec(0.0, 1.0, 0.0)
-view = util.lookat(eye, target, up)
-
-# projMat = util.perspective(120.0, 1.33, 0.1, 100.0)
-projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -0.5, 10.0)
-
-mvpMat =  projMat @ view @ model
 
 ## ADD CUBE ##
 # attach a simple cube in a RenderMesh so that VertexArray can pick it up
@@ -121,8 +73,31 @@ mesh4.vertex_attributes.append(colorCube)
 mesh4.vertex_index.append(indexCube)
 vArray4 = scene.world.addComponent(node4, VertexArray())
 # decorated components and systems with sample, default pass-through shader with uniform MVP
+
+
+
+model = util.translate(0.0,0.0,0.5)
+eye = util.vec(1.0, 1.0, 1.0)
+target = util.vec(0,0.0,0)
+up = util.vec(0.0, 1.0, 0.0)
+view = util.lookat(eye, target, up)
+
+# projMat = util.perspective(120.0, 1.33, 0.1, 100.0)
+projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -0.5, 10.0)
+
+mvpMat =  projMat @ view @ model
+
+
 shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_source = Shader.COLOR_VERT_MVP, fragment_source=Shader.COLOR_FRAG)))
 shaderDec4.setUniformVariable(key='modelViewProj', value=mvpMat, mat4=True)
+
+
+
+# Systems
+transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
+camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
+renderUpdate = scene.world.createSystem(RenderGLShaderSystem())
+initUpdate = scene.world.createSystem(InitGLShaderSystem())
 
 
 scene.world.print()
