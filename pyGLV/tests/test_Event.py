@@ -227,7 +227,7 @@ class TestEvent(unittest.TestCase):
         
         running = True
         # MAIN RENDERING LOOP
-        self.scene.init(imgui=True, windowWidth = 1024, windowHeight = 768, windowTitle = "pyglGA Cube ECSS Scene")
+        self.scene.init(imgui=True, windowWidth = 1024, windowHeight = 768, windowTitle = "Elements Cube ECSS Scene")
         
         # ---------------------------------------------------------
         # run Systems in the scenegraph
