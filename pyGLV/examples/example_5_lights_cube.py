@@ -182,7 +182,7 @@ axes_shader = scene.world.addComponent(axes, ShaderGLDecorator(Shader(vertex_sou
 # MAIN RENDERING LOOP
 
 running = True
-scene.init(imgui=True, windowWidth = 1200, windowHeight = 800, windowTitle = "Elements: Tea anyone?", openGLversion = 4, customImGUIdecorator = ImGUIecssDecorator)
+scene.init(imgui=True, windowWidth = 1200, windowHeight = 800, windowTitle = "Elements: Let There Be Light", openGLversion = 4, customImGUIdecorator = ImGUIecssDecorator)
 
 # pre-pass scenegraph to initialise all GL context dependent geometry, shader classes
 # needs an active GL context
@@ -231,7 +231,8 @@ while running:
     mvp_cube = projMat @ view @ trans4.trs
     mvp_terrain = projMat @ view @ terrain_trans.trs
     mvp_axes = projMat @ view @ axes_trans.trs
-    axes_shader.setUniformVariable(key='modelViewProj', value=mvp_axes, mat4=True)
+    axes_shader.setUniformVariable(key='modelViewProj', value = mvp_axes, mat4=True)
+
     terrain_shader.setUniformVariable(key='modelViewProj', value=mvp_terrain, mat4=True)
 
     shaderDec4.setUniformVariable(key='modelViewProj', value=mvp_cube, mat4=True)

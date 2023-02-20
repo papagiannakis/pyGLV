@@ -1,44 +1,16 @@
-
-
-from statistics import mode
-from turtle import width
-# import unittest
-
 import numpy as np
-# from sympy import true
 
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
 from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.System import System, TransformSystem, CameraSystem, RenderSystem
+from pyECSS.System import  TransformSystem, CameraSystem
 from pyGLV.GL.Scene import Scene
-from pyECSS.ECSSManager import ECSSManager
-from pyGLV.GUI.Viewer import SDL2Window, ImGUIDecorator, RenderGLStateSystem
+from pyGLV.GUI.Viewer import RenderGLStateSystem
 
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
 
 from OpenGL.GL import GL_LINES
-
-import OpenGL.GL as gl
-
-
-
-
-"""
-Common setup for all unit tests
-
-Scenegraph for unit tests:
-
-root
-    |---------------------------|           
-    entityCam1,                 node4,      
-    |-------|                    |--------------|----------|--------------|           
-    trans1, entityCam2           trans4,        mesh4,     shaderDec4     vArray4
-            |                               
-            ortho, trans2                   
-
-"""
 
 
 scene = Scene()    
@@ -52,11 +24,11 @@ trans1 = scene.world.addComponent(entityCam1, BasicTransform(name="trans1", trs=
 entityCam2 = scene.world.createEntity(Entity(name="entityCam2"))
 scene.world.addEntityChild(entityCam1, entityCam2)
 trans2 = scene.world.addComponent(entityCam2, BasicTransform(name="trans2", trs=util.identity()))
-orthoCam = scene.world.addComponent(entityCam2, Camera(util.ortho(-100.0, 100.0, -100.0, 100.0, 1.0, 100.0), "orthoCam","Camera","500"))
+# orthoCam = scene.world.addComponent(entityCam2, Camera(util.ortho(-100.0, 100.0, -100.0, 100.0, 1.0, 100.0), "orthoCam","Camera","500"))
 
 node4 = scene.world.createEntity(Entity(name="node4"))
 scene.world.addEntityChild(rootEntity, node4)
-trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.identity()))
+trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.translate(0,0.5,0))) #util.identity()
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="mesh4"))
 
 
@@ -131,17 +103,9 @@ indexCube = np.array((1,0,3, 1,3,2,
 
 # Systems
 transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
-camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
+# camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
 renderUpdate = scene.world.createSystem(RenderGLShaderSystem())
 initUpdate = scene.world.createSystem(InitGLShaderSystem())
-
-
-
-
-
-"""
-test_renderCubeAxesTerrainEVENT
-"""
 
 
 ## ADD CUBE ##
@@ -218,12 +182,20 @@ up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
 # projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
 # projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-projMat = util.perspective(50.0, 1.0, 1.0, 10.0) ## WORKING 
+projMat = util.perspective(50.0, 1.0, 0.01, 10.0) ## WORKING 
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 
-model_terrain_axes = util.translate(0.0,0.0,0.0)
-model_cube = util.scale(0.3) @ util.translate(0.0,0.5,0.0)
+
+model_cube = trans4.trs
+# OR
+# model_cube = util.scale(0.3) @ util.translate(0.0,0.5,0.0) ## COMPLETELY OVERRIDE OBJECT's TRS
+# OR
+# model_cube =  trans4.trs @ util.scale(0.3) @ util.translate(0.0,0.5,0.0) ## TAMPER WITH OBJECT's TRS
+
+model_terrain_axes = terrain.getChild(0).trs # notice that terrain.getChild(0) == terrain_trans
+# OR 
+# model_terrain_axes = util.translate(0.0,0.0,0.0) ## COMPLETELY OVERRIDE OBJECT's TRS
 
 while running:
     running = scene.render(running)

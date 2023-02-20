@@ -33,7 +33,7 @@ from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, Rende
 from pyGLV.GL.VertexArray import VertexArray
 from pyGLV.GL.Scene import Scene
 from pyGLV.GL.SimpleCamera import SimpleCamera
-# from pyglGA.scripts.IndexedConverter import IndexedConverter
+
 
 class IndexedConverter():
     
@@ -162,18 +162,7 @@ def main(imguiFlag = False):
     # Instantiate a simple complete ECSS with Entities, 
     # Components, Camera, Shader, VertexArray and RenderMesh
     #########################################################
-    """
-    ECSS for this example:
-    
-    root
-        |---------------------------|           
-        entityCam1,                 node4,      
-        |-------|                    |--------------|----------|--------------|           
-        trans1, entityCam2           trans4,        mesh4,     shaderDec4     vArray4
-                |              applyCamera2BasicTransform                 
-                ortho, trans2                   
-                                                            
-    """
+
     scene = Scene()    
 
     # Initialize Systems used for this script
@@ -207,7 +196,7 @@ def main(imguiFlag = False):
     
     # MAIN RENDERING LOOP
     running = True
-    scene.init(imgui=True, windowWidth = 1024, windowHeight = 1024, windowTitle = "pyglGA Cube ECSS Scene", customImGUIdecorator = ImGUIecssDecorator)
+    scene.init(imgui=True, windowWidth = 1024, windowHeight = 1024, windowTitle = "Elements: A CameraSystem Example", customImGUIdecorator = ImGUIecssDecorator)
 
     imGUIecss = scene.gContext
 
