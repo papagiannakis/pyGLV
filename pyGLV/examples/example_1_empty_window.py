@@ -5,7 +5,7 @@ patter, that is the SDL2Window, without any decorator on top
 
 from pyGLV.GUI.Viewer import SDL2Window
 
-gWindow = SDL2Window(openGLversion=3)
+gWindow = SDL2Window(openGLversion=4)
 gWindow.init()
 
 
