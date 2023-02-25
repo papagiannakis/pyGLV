@@ -11,7 +11,7 @@ scientific visualization and deep learning.
 
 
 
-.. image:: _static/sample_cube.png
+.. image:: _static/teapot.png
     :width: 500 px
     :align: center
 
