@@ -38,7 +38,7 @@ More information can be found in [Documentation](https://pyglv.readthedocs.io) a
   
 ---
 
-### *Copyright 2021-2022 Dr. George Papagiannakis,  papagian@csd.uoc.gr*
+### *Copyright 2021-2023 Dr. George Papagiannakis,  papagian@csd.uoc.gr*
 
 ### *All Rights Reserved*
 
