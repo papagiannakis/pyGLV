@@ -32,7 +32,7 @@ This package is aimed as a basic behind-the-black-box implementation of several 
   pip install pyglv
   ```
 
-  For `developing`, fork this repository and run
+ - For `developing`, fork this repository and run
 
   ```
   pip install -e . --config-settings editable_mode=strict
