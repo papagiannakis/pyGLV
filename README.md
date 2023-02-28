@@ -14,15 +14,16 @@ A python, pure software design pattern based package that used plain and simple 
 
 ---
 
+## **Why GLV?**:
 
-> **Why GLV?**:
->
-> This package is aimed as a basic behind-the-black-box implementation of several classic as well as modern computer graphics  methodologies, algorithms and techniques, aimed for teaching as well as framework for novel research.
+This package is aimed as a basic behind-the-black-box implementation of several classic as well as modern computer graphics  methodologies, algorithms and techniques, aimed for teaching as well as framework for novel research.
 
-The following software design patterns are employed:
+> The following software design patterns are employed:
 
-- Decorator Pattern: *RenderDecorator, ComponentDecorator, SystemDecorator*
-- game-loop pattern (GPP non GoF): *Scene*
+> - Decorator Pattern: *RenderDecorator, ComponentDecorator, SystemDecorator*
+> - game-loop pattern (GPP non GoF): *Scene*
+
+---
 
 ## Installation
 
