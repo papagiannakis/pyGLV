@@ -8,9 +8,9 @@ The pyGLV package
 
 A python, pure software design pattern based package that used plain and simple **E**ntities, **C**omponents and **S**ystems in a **S**cenegraph architecture from thge `pyECSS` package, in order to showcase basic, cross-platform OpenGL-based real-time computer graphics with applications to scientific visualization and deep learning.
 
-- ** Documentation: ** https://pyglv.readthedocs.io
-- ** Source code: ** https://github.com/papagiannakis/pyglv
-- ** Bug Reports: ** https://github.com/papagiannakis/pyglv/issues
+- **Documentation:** https://pyglv.readthedocs.io
+- **Source code:** https://github.com/papagiannakis/pyglv
+- **Bug Reports:** https://github.com/papagiannakis/pyglv/issues
 
 ---
 
