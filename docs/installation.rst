@@ -13,9 +13,9 @@ based on your system you may create a virtual environment via the ``conda`` comm
 
 Typically, you may create a new envirnment via the command::
 
-    conda create -n myenv python==3.9
+    conda create -n myenv python==3.8
 
-This creates a new environment, named myenv, with a python version 3.9, which is the proper version to run pyGLV.
+This creates a new environment, named myenv, with a python version 3.8, which is the proper version to run pyGLV.
 
 You may now activate the environment by running::
 
