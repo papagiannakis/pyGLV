@@ -31,6 +31,7 @@ from pyECSS.Component import Component, BasicTransform, Camera, ComponentDecorat
 import uuid  
 import pyECSS.utilities as util
 from pyGLV.GL.VertexArray import VertexArray
+from pyGLV.GL.Textures import Texture
 
 class Shader(Component):
     """
@@ -239,11 +240,114 @@ class Shader(Component):
             normal = mat3(transpose(inverse(weightedModel))) * vNormal.xyz;
         }
     """
+    SIMPLE_TEXTURE_VERT = """
+        #version 410
+
+        layout (location=0) in vec4 vPos;
+        layout (location=1) in vec2 vTexCoord;
+
+        out vec2 fragmentTexCoord;
+
+        uniform mat4 model;
+        uniform mat4 View;
+        uniform mat4 Proj;
+
+        void main()
+        {
+            gl_Position = model * View * Proj * vPos;
+            fragmentTexCoord = vTexCoord;
+        }
+    """
+    SIMPLE_TEXTURE_FRAG = """
+        #version 410
+        
+        in vec2 fragmentTexCoord;
+
+        out vec4 color;
+
+        uniform sampler2D ImageTexture;
+
+        void main()
+        {
+            color = texture(ImageTexture,fragmentTexCoord);
+        }
+    """
+    SIMPLE_TEXTURE_PHONG_VERT = """
+        #version 410
+
+        layout (location=0) in vec3 vPos;
+        layout (location=1) in vec4 vNormal;
+        layout (location=2) in vec2 vTexCoord;
+
+        out vec2 fragmentTexCoord;
+        out vec4 pos;
+        out vec3 normal;
+
+        uniform mat4 model;
+        uniform mat4 View;
+        uniform mat4 Proj;
+
+        void main()
+        {
+            gl_Position = model * View * Proj * vPos;
+            pos = model * vPosition;
+            fragmentTexCoord = vTexCoord;
+            normal = mat3(transpose(inverse(model))) * vNormal.xyz;
+        }
+    """
+    SIMPLE_TEXTURE_PHONG_FRAG = """
+        #version 410
+        
+        in vec2 fragmentTexCoord;
+        in vec4 pos;
+        in vec3 normal;
+
+        out vec4 outputColor;
+
+        // Phong products
+        uniform vec3 ambientColor;
+        uniform float ambientStr;
+
+        // Lighting 
+        uniform vec3 viewPos;
+        uniform vec3 lightPos;
+        uniform vec3 lightColor;
+        uniform float lightIntensity;
+
+        // Material
+        uniform float shininess;
+        uniform vec3 matColor;
+
+        uniform sampler2D ImageTexture;
+
+        void main()
+        {
+            vec3 norm = normalize(normal);
+            vec3 lightDir = normalize(lightPos - pos.xyz);
+            vec3 viewDir = normalize(viewPos - pos.xyz);
+            vec3 reflectDir = reflect(-lightDir, norm);
+
+            // Ambient
+            vec3 ambientProduct = ambientStr * ambientColor;
+            // Diffuse
+            float diffuseStr = max(dot(norm, lightDir), 0.0);
+            vec3 diffuseProduct = diffuseStr * lightColor;
+            // Specular
+            float specularStr = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+            vec3 specularProduct = shininess * specularStr * color.xyz;
+            
+            vec3 result = (ambientProduct + (diffuseProduct + specularProduct) * lightIntensity) * texture(ImageTexture,fragmentTexCoord);
+            outputColor = vec4(result, 1);
+        }
+
+    """
 
     def __init__(self, name=None, type=None, id=None, vertex_source=None, fragment_source=None):
         super().__init__(name, type, id)
         
         self._parent = self
+
+        self._texture = None
         
         self._glid = None
         self._mat4fDict = {}
@@ -251,6 +355,8 @@ class Shader(Component):
         self._float1fDict = {}
         self._float3fDict = {}
         self._float4fDict = {}
+        self._aaaDict = {}
+        self._textureDict = {}
         
         if not vertex_source:
             self._vertex_source = Shader.COLOR_VERT
@@ -317,6 +423,13 @@ class Shader(Component):
     @float4fDict.setter
     def float4fDict(self, value):
         self._float4fDict = value
+
+    @property
+    def textureDict(self):
+        return self._textureDict
+    @textureDict.setter
+    def textureDict(self, value):
+        self._textureDict = value
     
     def __del__(self):
         gl.glUseProgram(0)
@@ -351,6 +464,13 @@ class Shader(Component):
                 loc = gl.glGetUniformLocation(self._glid, key)
                 # gl.glUniform4fv(loc, 1, True, value) Bad call
                 gl.glUniform4fv(loc, 1, value)
+        if self._textureDict is not None:#
+            for key,value in self._textureDict.items():
+                print("key: "+key+" value: "+value)
+                self._texture = Texture(value)
+                self._texture.bind()
+                loc = gl.glGetUniformLocation(self._glid,key) # key = "ImageTexture"
+                gl.glUniform1i(loc,0)
             
     @staticmethod
     def _compile_shader(src, shader_type):
@@ -426,7 +546,7 @@ class ShaderGLDecorator(ComponentDecorator):
         # e.g.  loc = GL.glGetUniformLocation(shid, 'projection')
         #       GL.glUniformMatrix4fv(loc, 1, True, projection)
         
-    def setUniformVariable(self,key, value, mat4=False, mat3=False, float1=False, float3=False, float4=False):
+    def setUniformVariable(self,key, value, mat4=False, mat3=False, float1=False, float3=False, float4=False,texture=False):#
         if mat4:
             self.component.mat4fDict[key]=value
         if mat3:
@@ -437,6 +557,9 @@ class ShaderGLDecorator(ComponentDecorator):
             self.component.float3fDict[key]=value
         if float4:
             self.component.float4fDict[key]=value
+        if texture:
+            self.component.textureDict[key]=value
+            #self.component.textureDict[key]=Texture(value)
             
     def enableShader(self):
         self.component.enableShader()
