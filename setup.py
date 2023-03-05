@@ -39,6 +39,7 @@ setup(
         'pysdl2',
         'pysdl2-dll',
         'ipykernel',
+        'pywavefront'
     ],
     
 
