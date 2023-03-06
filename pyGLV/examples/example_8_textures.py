@@ -10,6 +10,7 @@ from pyGLV.GUI.Viewer import RenderGLStateSystem
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
 import pyGLV.GL.normals as norm
+from pyGLV.GL.Textures import Texture
 
 from OpenGL.GL import GL_LINES
 
@@ -80,16 +81,6 @@ vertexCube = np.array([
     [0.5, -0.5, -0.5, 1.0]
 ],dtype=np.float32)
 
-texCoord = np.array([
-    [0.0, 0.0],
-    [1.0, 0.0],
-    [1.0, 1.0],
-    [0.0, 1.0],
-    [0.0, 1.0],
-    [1.0, 1.0],
-    [1.0, 0.0],
-    [0.0, 0.0]
-],dtype=np.float32)
 
 #index arrays for above vertex Arrays
 index = np.array((0,1,2), np.uint32) #simple triangle
@@ -101,6 +92,8 @@ indexCube = np.array((1,0,3, 1,3,2,
                   4,5,6, 4,6,7,
                   5,4,0, 5,0,1), np.uint32) #rhombus out of two triangles
 
+vertices, indices, _ = norm.generateUniqueVertices(vertexCube,indexCube)
+
 # Systems
 transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
 # camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
@@ -110,9 +103,9 @@ initUpdate = scene.world.createSystem(InitGLShaderSystem())
 
 ## ADD CUBE ##
 # attach a simple cube in a RenderMesh so that VertexArray can pick it up
-mesh4.vertex_attributes.append(vertexCube)
-mesh4.vertex_attributes.append(texCoord)
-mesh4.vertex_index.append(indexCube)
+mesh4.vertex_attributes.append(vertices)
+mesh4.vertex_attributes.append(Texture.CUBE_TEX_COORDINATES)
+mesh4.vertex_index.append(indices)
 vArray4 = scene.world.addComponent(node4, VertexArray())
 shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_source = Shader.SIMPLE_TEXTURE_VERT, fragment_source=Shader.SIMPLE_TEXTURE_FRAG)))
 

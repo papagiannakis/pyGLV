@@ -15,6 +15,7 @@ from OpenGL.GL import GL_LINES
 import OpenGL.GL as gl
 
 import pyGLV.GL.normals as norm
+from pyGLV.GL.Textures import Texture
 from pyGLV.GL.terrain import generateTerrain
 from pyGLV.GL.obj_to_mesh import obj_to_mesh
 
@@ -124,17 +125,6 @@ indexCube = np.array((1,0,3, 1,3,2,
                   4,5,6, 4,6,7,
                   5,4,0, 5,0,1), np.uint32) #rhombus out of two triangles
 
-texCoord = np.array([
-    [0.0, 0.0],
-    [1.0, 0.0],
-    [1.0, 1.0],
-    [0.0, 1.0],
-    [0.0, 1.0],
-    [1.0, 1.0],
-    [1.0, 0.0],
-    [0.0, 0.0]
-],dtype=np.float32)
-
 # Systems
 transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
 camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
@@ -142,13 +132,11 @@ renderUpdate = scene.world.createSystem(RenderGLShaderSystem())
 initUpdate = scene.world.createSystem(InitGLShaderSystem())
 
 
-
-
-vertices, indices, _, normals = norm.generateSmoothNormalsMesh(vertexCube , indexCube)
+vertices, indices, _, normals = norm.generateFlatNormalsMesh(vertexCube , indexCube)
 
 mesh4.vertex_attributes.append(vertices)
 mesh4.vertex_attributes.append(normals)
-mesh4.vertex_attributes.append(texCoord)
+mesh4.vertex_attributes.append(Texture.CUBE_TEX_COORDINATES)
 mesh4.vertex_index.append(indices)
 vArray4 = scene.world.addComponent(node4, VertexArray())
 shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_source = Shader.SIMPLE_TEXTURE_PHONG_VERT, fragment_source=Shader.SIMPLE_TEXTURE_PHONG_FRAG)))
@@ -260,7 +248,7 @@ while running:
     shaderDec4.setUniformVariable(key='lightColor',value=Lcolor,float3=True)
     shaderDec4.setUniformVariable(key='lightIntensity',value=Lintensity,float1=True)
     shaderDec4.setUniformVariable(key='shininess',value=Mshininess,float1=True)
-    shaderDec4.setUniformVariable(key='matColor',value=Mcolor,float3=True)
+    #shaderDec4.setUniformVariable(key='matColor',value=Mcolor,float3=True)
 
 
     scene.render_post()

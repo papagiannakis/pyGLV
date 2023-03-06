@@ -1,4 +1,5 @@
 import OpenGL.GL as gl
+import numpy as np
 from PIL import Image
 
 class Texture:
@@ -6,8 +7,53 @@ class Texture:
     This Class is used for initializing simple textures
     """
 
+    CUBE_TEX_COORDINATES = np.array([
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 0.0],
+    [1.0, 1.0],
+    [0.0, 1.0],
+],dtype=np.float32)
+
     def __init__(self,filepath):
-        angle = 90
+        angle = -90
 
         img = Image.open(filepath)
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
