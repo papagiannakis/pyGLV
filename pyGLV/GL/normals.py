@@ -1,7 +1,7 @@
 import numpy as np
 import pyECSS.utilities as util
 
-def generateUniqueVertices(vertices,indices,color):
+def generateUniqueVertices(vertices,indices,color=None):
     """
     Generates vertices, indices and color of given non-unique vertices
     Arguments:
@@ -20,14 +20,16 @@ def generateUniqueVertices(vertices,indices,color):
     for i in range(len(indices)):
         newvertices = np.r_[newvertices,vertices[indices[i]]]
         newindices = np.append(newindices,i)
-        newcolor = np.r_[newcolor,color[indices[i]]]
+        if color is not None:
+            newcolor = np.r_[newcolor,color[indices[i]]]
     
     newvertices = newvertices.reshape((int(len(newvertices)/4) ,4))
-    newcolor = newcolor.reshape((int(len(newcolor)/4) ,4))
+    if color is not None:
+        newcolor = newcolor.reshape((int(len(newcolor)/4) ,4))
     
     return newvertices,newindices,newcolor
 
-def generateSimpleVertices(vertices,indices,color):
+def generateSimpleVertices(vertices,indices,color=None):
     """
     Generates vertices, indices and color of given unique vertices
     Arguments:
@@ -64,7 +66,8 @@ def generateSimpleVertices(vertices,indices,color):
 
         if flag==False:
             verticesSet[count] = val
-            colorSet[count] = clr
+            if color is not None:
+                colorSet[count] = clr
             valid = count
             count = count+1
         newindices = np.append(newindices,valid)
@@ -73,10 +76,12 @@ def generateSimpleVertices(vertices,indices,color):
 
     for key in range(total):
         newvertices = np.r_[newvertices,list(verticesSet.get(key))]
-        newcolor = np.r_[newcolor,list(colorSet.get(key))]
+        if color is not None:
+            newcolor = np.r_[newcolor,list(colorSet.get(key))]
 
     newvertices = newvertices.reshape((int(len(newvertices)/4) ,4))
-    newcolor = newcolor.reshape((int(len(newcolor)/4) ,4))
+    if color is not None:
+        newcolor = newcolor.reshape((int(len(newcolor)/4) ,4))
 
     return newvertices,newindices,newcolor
 
@@ -144,7 +149,7 @@ def generateNormals(vertices, indices):
     
     return normals
 
-def generateSmoothNormalsMesh(vertices, indices, color):
+def generateSmoothNormalsMesh(vertices, indices, color=None):
     """
     Generates Normals for smooth shading
     If given vertices Are Unique then generate simple vertices/indices/color First
@@ -163,7 +168,7 @@ def generateSmoothNormalsMesh(vertices, indices, color):
         return newvertices,newindices,newcolor,generateNormals(newvertices,newindices)
     return vertices, indices, color, generateNormals(vertices,indices)
 
-def generateFlatNormalsMesh(vertices,indices,color):
+def generateFlatNormalsMesh(vertices,indices,color=None):
     """
     Generates Normals for Flat shading
     If given vertices Are not Unique then generate Unique vertices/indices/color First

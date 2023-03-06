@@ -254,7 +254,7 @@ class Shader(Component):
 
         void main()
         {
-            gl_Position = model * View * Proj * vPos;
+            gl_Position =  Proj * View * model * vPos;
             fragmentTexCoord = vTexCoord;
         }
     """
@@ -269,13 +269,16 @@ class Shader(Component):
 
         void main()
         {
+            //vec2 flipped_texcoord = vec2(fragmentTexCoord.x, 1.0 - fragmentTexCoord.y);
+            //color = texture(ImageTexture,flipped_texcoord);
+
             color = texture(ImageTexture,fragmentTexCoord);
         }
     """
     SIMPLE_TEXTURE_PHONG_VERT = """
         #version 410
 
-        layout (location=0) in vec3 vPos;
+        layout (location=0) in vec4 vPos;
         layout (location=1) in vec4 vNormal;
         layout (location=2) in vec2 vTexCoord;
 
@@ -289,8 +292,8 @@ class Shader(Component):
 
         void main()
         {
-            gl_Position = model * View * Proj * vPos;
-            pos = model * vPosition;
+            gl_Position =  Proj * View * model * vPos;
+            pos = model * vPos;
             fragmentTexCoord = vTexCoord;
             normal = mat3(transpose(inverse(model))) * vNormal.xyz;
         }
@@ -316,7 +319,7 @@ class Shader(Component):
 
         // Material
         uniform float shininess;
-        uniform vec3 matColor;
+        //uniform vec3 matColor;
 
         uniform sampler2D ImageTexture;
 
@@ -334,9 +337,12 @@ class Shader(Component):
             vec3 diffuseProduct = diffuseStr * lightColor;
             // Specular
             float specularStr = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-            vec3 specularProduct = shininess * specularStr * color.xyz;
+
+            vec4 tex = texture(ImageTexture,fragmentTexCoord);
+
+            vec3 specularProduct = shininess * specularStr * tex.xyz;
             
-            vec3 result = (ambientProduct + (diffuseProduct + specularProduct) * lightIntensity) * texture(ImageTexture,fragmentTexCoord);
+            vec3 result = (ambientProduct + (diffuseProduct + specularProduct) * lightIntensity) * tex.xyz;
             outputColor = vec4(result, 1);
         }
 
@@ -466,11 +472,13 @@ class Shader(Component):
                 gl.glUniform4fv(loc, 1, value)
         if self._textureDict is not None:#
             for key,value in self._textureDict.items():
-                print("key: "+key+" value: "+value)
-                self._texture = Texture(value)
-                self._texture.bind()
-                loc = gl.glGetUniformLocation(self._glid,key) # key = "ImageTexture"
-                gl.glUniform1i(loc,0)
+                #if self._texture is not None:
+                    #self._texture.unbind()
+                if self._texture is None:
+                    self._texture = Texture(value)
+                    self._texture.bind()
+                    loc = gl.glGetUniformLocation(self._glid,key) # key = "ImageTexture"
+                    gl.glUniform1i(loc,0)
             
     @staticmethod
     def _compile_shader(src, shader_type):
