@@ -2,8 +2,6 @@ import numpy as np
 
 from pyGLV.GL.objimporter.wavefront_obj_mesh import WavefrontObjectMesh
 
-# The difference between ObjMesh and Mesh is that Mesh has one index array for both vertices, normals and texture coordinates,
-# while ObjMesh has different indices for each of the above
 class Mesh:
     """
     A class that stores meshes.
