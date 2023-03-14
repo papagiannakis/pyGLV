@@ -17,7 +17,8 @@ import OpenGL.GL as gl
 
 import pyGLV.GL.normals as norm
 from pyGLV.GL.terrain import generateTerrain
-from pyGLV.GL.obj_to_mesh import obj_to_mesh
+
+from pyGLV.GL.objimporter.wavefront import Wavefront
 
 
 #Light
@@ -59,7 +60,7 @@ orthoCam = scene.world.addComponent(entityCam2, Camera(m, "orthoCam","Camera","5
 
 node4 = scene.world.createEntity(Entity(name="Object"))
 scene.world.addEntityChild(rootEntity, node4)
-trans4 = scene.world.addComponent(node4, BasicTransform(name="Object_TRS", trs=util.scale(0.1, 0.1, 0.1) ))
+trans4 = scene.world.addComponent(node4, BasicTransform(name="Object_TRS", trs=util.scale(0.8, 0.8, 0.8) ))
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="Object_mesh"))
 
 
@@ -109,20 +110,20 @@ initUpdate = scene.world.createSystem(InitGLShaderSystem())
 
 ## object load 
 dirname = os.path.dirname(__file__)
-obj_to_import = os.path.join(dirname, 'models/teapot.obj')
-# obj_to_import = os.path.join(dirname, 'models/cow.obj')
-obj_color = [168/255, 168/255 , 210/255, 1.0]
-vert , ind, col = obj_to_mesh(obj_to_import, color=obj_color)
-vertices, indices, colors, normals = norm.generateSmoothNormalsMesh(vert , ind, col)
+obj_to_import = os.path.join(dirname, 'models\\sphere.obj')
+# obj_to_import = os.path.join(dirname, 'models\\cow.obj')
 
-mesh4.vertex_attributes.append(vertices)
+imported_obj = Wavefront(obj_to_import)
+
+mesh_from_obj = imported_obj.meshes['icosphere']
+
+colors = np.array([[1.0, 0.0, 0.0, 1.0]] * len(mesh_from_obj.vertices)) # Paint sphere red
+mesh4.vertex_attributes.append(mesh_from_obj.vertices)
 mesh4.vertex_attributes.append(colors)
-mesh4.vertex_attributes.append(normals)
-mesh4.vertex_index.append(indices)
+mesh4.vertex_attributes.append(mesh_from_obj.normals)
+mesh4.vertex_index.append(mesh_from_obj.indices)
 vArray4 = scene.world.addComponent(node4, VertexArray())
 shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_source = Shader.VERT_PHONG_MVP, fragment_source=Shader.FRAG_PHONG)))
-
-
 
 
 # Generate terrain
@@ -143,7 +144,7 @@ terrain_shader = scene.world.addComponent(terrain, ShaderGLDecorator(Shader(vert
 ## ADD AXES ##
 axes = scene.world.createEntity(Entity(name="axes"))
 scene.world.addEntityChild(rootEntity, axes)
-axes_trans = scene.world.addComponent(axes, BasicTransform(name="axes_trans", trs=util.translate(0.0, 0.001, 0.0))) #util.identity()
+axes_trans = scene.world.addComponent(axes, BasicTransform(name="axes_trans", trs=util.translate(0.0, 0.0001, 0.0))) #util.identity()
 axes_mesh = scene.world.addComponent(axes, RenderMesh(name="axes_mesh"))
 axes_mesh.vertex_attributes.append(vertexAxes) 
 axes_mesh.vertex_attributes.append(colorAxes)
@@ -159,7 +160,7 @@ axes_shader = scene.world.addComponent(axes, ShaderGLDecorator(Shader(vertex_sou
 # MAIN RENDERING LOOP
 
 running = True
-scene.init(imgui=True, windowWidth = 1200, windowHeight = 800, windowTitle = "Elements: Tea anyone?", openGLversion = 4, customImGUIdecorator = ImGUIecssDecorator)
+scene.init(imgui=True, windowWidth = 1200, windowHeight = 800, windowTitle = "Elements: Import wavefront .obj example", openGLversion = 4, customImGUIdecorator = ImGUIecssDecorator)
 
 # pre-pass scenegraph to initialise all GL context dependent geometry, shader classes
 # needs an active GL context

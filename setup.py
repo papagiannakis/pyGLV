@@ -38,7 +38,7 @@ setup(
         'PyOpenGL_accelerate',
         'pysdl2',
         'pysdl2-dll',
-        'ipykernel',
+        'ipykernel'
     ],
     
 
