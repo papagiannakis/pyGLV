@@ -31,7 +31,7 @@ from pyECSS.Component import Component, BasicTransform, Camera, ComponentDecorat
 import uuid  
 import pyECSS.utilities as util
 from pyGLV.GL.VertexArray import VertexArray
-from pyGLV.GL.Textures import Texture
+from pyGLV.GL.Textures import Texture, Texture3D
 
 class Shader(Component):
     """
@@ -347,6 +347,82 @@ class Shader(Component):
         }
 
     """
+    TEXTURE_3D_VERT = """
+        #version 410
+
+        layout (location=0) in vec4 vPos;
+
+        out vec3 TexCoords;
+
+        uniform mat4 model;
+        uniform mat4 View;
+        uniform mat4 Proj;
+
+        void main()
+        {
+            gl_Position = Proj * View * model * vPos;
+            TexCoords = vPos.xyz;
+        }
+
+    """
+    TEXTURE_3D_FRAG = """
+        #version 410
+
+        in vec3 TexCoords;
+
+        out vec4 FragColor;
+
+        uniform samplerCube cubemap; 
+
+        void main()
+        {             
+            FragColor = texture(cubemap, TexCoords);
+        } 
+    """
+    TEXTURE_3D_PHONG_VERT = """
+        #version 410
+
+    """
+    TEXTURE_3D_PHONG_FRAG = """
+        #version 410
+
+    """
+    STATIC_SKYBOX_VERT = """
+        #version 410
+
+        layout (location = 0) in vec4 vPos;
+
+        out vec3 TexCoords;
+
+        uniform mat4 Proj;
+        uniform mat4 View;
+
+        void main()
+        {
+            mat4 viewPos = mat4(mat3(View)); //removes Translation
+            gl_Position = Proj * viewPos * vPos;
+
+            //gl_Position = Proj * View * vPos; // with Translation
+
+            TexCoords = vPos.xyz;
+        } 
+
+    """
+    STATIC_SKYBOX_FRAG = """
+        #version 410
+    
+        out vec4 FragColor;
+
+        in vec3 TexCoords;
+
+        uniform samplerCube cubemap;
+
+        void main()
+        {    
+            FragColor = texture(cubemap, TexCoords);
+        }
+    """
+
 
     def __init__(self, name=None, type=None, id=None, vertex_source=None, fragment_source=None):
         super().__init__(name, type, id)
@@ -354,6 +430,7 @@ class Shader(Component):
         self._parent = self
 
         self._texture = None
+        self._texture3D = None
         
         self._glid = None
         self._mat4fDict = {}
@@ -363,6 +440,7 @@ class Shader(Component):
         self._float4fDict = {}
         self._aaaDict = {}
         self._textureDict = {}
+        self._texture3DDict ={}
         
         if not vertex_source:
             self._vertex_source = Shader.COLOR_VERT
@@ -436,6 +514,13 @@ class Shader(Component):
     @textureDict.setter
     def textureDict(self, value):
         self._textureDict = value
+
+    @property
+    def texture3DDict(self):
+        return self._texture3DDict
+    @texture3DDict.setter
+    def texture3DDict(self, value):
+        self._texture3DDict = value
     
     def __del__(self):
         gl.glUseProgram(0)
@@ -470,15 +555,18 @@ class Shader(Component):
                 loc = gl.glGetUniformLocation(self._glid, key)
                 # gl.glUniform4fv(loc, 1, True, value) Bad call
                 gl.glUniform4fv(loc, 1, value)
-        if self._textureDict is not None:#
+        if self._textureDict is not None:
             for key,value in self._textureDict.items():
-                #if self._texture is not None:
-                    #self._texture.unbind()
                 if self._texture is None:
-                    self._texture = Texture(value)
-                    self._texture.bind()
-                    loc = gl.glGetUniformLocation(self._glid,key) # key = "ImageTexture"
+                    loc = gl.glGetUniformLocation(self._glid,key)
                     gl.glUniform1i(loc,0)
+                    value.bind()
+        if self._texture3DDict is not None:
+            for key,value in self._texture3DDict.items():
+                if self._texture3D is None:
+                    loc = gl.glGetUniformLocation(self._glid,key)
+                    gl.glUniform1i(loc,0)
+                    value.bind()
             
     @staticmethod
     def _compile_shader(src, shader_type):
@@ -554,7 +642,7 @@ class ShaderGLDecorator(ComponentDecorator):
         # e.g.  loc = GL.glGetUniformLocation(shid, 'projection')
         #       GL.glUniformMatrix4fv(loc, 1, True, projection)
         
-    def setUniformVariable(self,key, value, mat4=False, mat3=False, float1=False, float3=False, float4=False,texture=False):#
+    def setUniformVariable(self,key, value, mat4=False, mat3=False, float1=False, float3=False, float4=False,texture=False,texture3D=False):
         if mat4:
             self.component.mat4fDict[key]=value
         if mat3:
@@ -566,8 +654,10 @@ class ShaderGLDecorator(ComponentDecorator):
         if float4:
             self.component.float4fDict[key]=value
         if texture:
-            self.component.textureDict[key]=value
+            self.component.textureDict[key]=Texture(value)
             #self.component.textureDict[key]=Texture(value)
+        if texture3D:
+            self.component.texture3DDict[key]=Texture3D(value)
             
     def enableShader(self):
         self.component.enableShader()
