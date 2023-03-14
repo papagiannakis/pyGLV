@@ -24,9 +24,23 @@ scientific visualization and deep learning.
    installation
    changelog
 
-
 .. toctree::
    :maxdepth: 1
+   :caption: Examples:
+   :hidden:
+
+   examples/Example1
+   examples/Example2
+   examples/Example3
+   examples/Example4
+   examples/Example5
+   examples/Example6
+   examples/Example7
+   examples/Example8
+   examples/Example9
+
+.. toctree::
+   :maxdepth: 3
    :caption: API Documentation
    :hidden:
 
