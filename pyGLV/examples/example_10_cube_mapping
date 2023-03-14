@@ -38,15 +38,17 @@ trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="mesh4"))
 
 #Cube
+minbox = -30
+maxbox = 30
 vertexSkybox = np.array([
-    [-3.0, -3.0, 3.0, 1.0],
-    [-3.0, 3.0, 3.0, 1.0],
-    [3.0, 3.0, 3.0, 1.0],
-    [3.0, -3.0, 3.0, 1.0], 
-    [-3.0, -3.0, -3.0, 1.0], 
-    [-3.0, 3.0, -3.0, 1.0], 
-    [3.0, 3.0, -3.0, 1.0], 
-    [3.0, -3.0, -3.0, 1.0]
+    [minbox, minbox, maxbox, 1.0],
+    [minbox, maxbox, maxbox, 1.0],
+    [maxbox, maxbox, maxbox, 1.0],
+    [maxbox, minbox, maxbox, 1.0], 
+    [minbox, minbox, minbox, 1.0], 
+    [minbox, maxbox, minbox, 1.0], 
+    [maxbox, maxbox, minbox, 1.0], 
+    [maxbox, minbox, minbox, 1.0]
 ],dtype=np.float32)
 
 #index array for Skybox
@@ -126,7 +128,7 @@ eye = util.vec(2.5, 2.5, 2.5)
 target = util.vec(0.0, 0.0, 0.0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-projMat = util.perspective(50.0, 1.0, 0.01, 10.0) ## WORKING 
+projMat = util.perspective(50.0, 1.0, 0.01, 100.0) ## WORKING 
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 

@@ -230,8 +230,9 @@ while running:
 
     model_cube = util.translate(0.0,0.5,0.0) @ util.rotate((0.0,1.0,0.0),rotate_y)
     rotate_y += rotation_speed
+    # OR
+    # model_cube = trans4.trs
 
-    mvp_cube = projMat @ view @ trans4.trs
     mvp_terrain = projMat @ view @ terrain_trans.trs
     mvp_axes = projMat @ view @ axes_trans.trs
     axes_shader.setUniformVariable(key='modelViewProj', value = mvp_axes, mat4=True)
