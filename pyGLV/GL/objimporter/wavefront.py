@@ -9,7 +9,7 @@ class Wavefront:
 
     Most common .obj file formats are supported.
     """
-    def __init__(self, file_path) -> None:
+    def __init__(self, file_path, encoding = 'utf-8') -> None:
         self.__file_path = file_path
         self.__mtllibs = []
         self.materials = {}
@@ -35,21 +35,21 @@ class Wavefront:
             "usemtl" : self.__parse_use_material,
         }
 
-        self.__parse_from_file()
+        self.__parse_from_file(encoding)
 
         self.__convert_obj_meshes_to_meshes()
 
     def __get_current_mesh(self) -> WavefrontObjectMesh:
         if len(self.__obj_mesh_list) > 0:
             return self.__obj_mesh_list[len(self.__obj_mesh_list)-1]
-        else:
-            current_mesh = WavefrontObjectMesh()
+        else: # If current mesh not exists create a new anonymous one
+            current_mesh = WavefrontObjectMesh("")
             self.__obj_mesh_list.append(current_mesh)
             return current_mesh 
     
-    def __parse_from_file(self) -> None:
+    def __parse_from_file(self, encoding) -> None:
         try:
-            with codecs.open(self.__file_path, encoding='utf-8') as f:
+            with codecs.open(self.__file_path, encoding=encoding) as f:
                 
                 line_number = 0
                 # Parse file lines
@@ -58,8 +58,8 @@ class Wavefront:
 
                     line = line.strip()
 
-                    # Line is comment? Skip
-                    if line[0] == "#" or len(line)<=1:
+                    # Line is empty or comment? Skip
+                    if len(line)<1 or line[0] == "#":
                         continue
 
                     parse_function = self.__parse_dispatch.get(line.split(' ')[0], self.__parse_unknown)
