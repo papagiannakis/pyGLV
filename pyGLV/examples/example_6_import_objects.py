@@ -60,7 +60,7 @@ orthoCam = scene.world.addComponent(entityCam2, Camera(m, "orthoCam","Camera","5
 
 node4 = scene.world.createEntity(Entity(name="Object"))
 scene.world.addEntityChild(rootEntity, node4)
-trans4 = scene.world.addComponent(node4, BasicTransform(name="Object_TRS", trs=util.scale(0.8, 0.8, 0.8) ))
+trans4 = scene.world.addComponent(node4, BasicTransform(name="Object_TRS", trs=util.scale(0.1, 0.1, 0.1) ))
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="Object_mesh"))
 
 
@@ -110,14 +110,19 @@ initUpdate = scene.world.createSystem(InitGLShaderSystem())
 
 ## object load 
 dirname = os.path.dirname(__file__)
-obj_to_import = os.path.join(dirname, 'models\\sphere.obj')
-# obj_to_import = os.path.join(dirname, 'models\\cow.obj')
+# obj_to_import = os.path.join(dirname, 'models','cow.obj')
+# obj_to_import = os.path.join(dirname, 'models','sphere.obj')
+obj_to_import = os.path.join(dirname, 'models','teapot.obj')
 
 imported_obj = Wavefront(obj_to_import)
 
-mesh_from_obj = imported_obj.meshes['icosphere']
+# mesh_from_obj = imported_obj.meshes['icosphere']
+mesh_from_obj = imported_obj.mesh_list[0]
 
 colors = np.array([[1.0, 0.0, 0.0, 1.0]] * len(mesh_from_obj.vertices)) # Paint sphere red
+
+# vertices, indices, colors, normals = norm.generateSmoothNormalsMesh(vert , ind, col)
+
 mesh4.vertex_attributes.append(mesh_from_obj.vertices)
 mesh4.vertex_attributes.append(colors)
 mesh4.vertex_attributes.append(mesh_from_obj.normals)
@@ -195,7 +200,8 @@ projMat = util.perspective(50.0, 1200/800, 0.01, 100.0) ## WORKING
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 
 model_terrain_axes = util.translate(0.0,0.0,0.0)
-model_cube = util.scale(0.1) @ util.translate(0.0,0.5,0.0)
+model_cube = trans4.trs
+# util.scale(0.1) @ util.translate(0.0,0.5,0.0)
 
 
 
