@@ -114,7 +114,7 @@ dirname = os.path.dirname(__file__)
 # obj_to_import = os.path.join(dirname, 'models','sphere.obj')
 obj_to_import = os.path.join(dirname, 'models','teapot.obj')
 
-imported_obj = Wavefront(obj_to_import)
+imported_obj = Wavefront(obj_to_import, calculate_smooth_normals=True)
 
 # mesh_from_obj = imported_obj.meshes['icosphere']
 mesh_from_obj = imported_obj.mesh_list[0]

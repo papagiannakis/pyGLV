@@ -13,8 +13,8 @@ class Wavefront:
     ----------
     file_path : str
         The file path where the .obj file to import is.
-    calculate_normals : bool, default False
-        Whether to calculate normals or not. 
+    calculate_smooth_normals : bool, default False
+        Whether to calculate smooth normals or import/flat shade the model. 
         If set to False, the imported normals will populate the normals array of each mesh. If the file does not contain normals, then flat shading normals will be used.
         If set to True, the normals will not be imported, but rather calculated in order to achieve a smooth shading result.
     encoding : str, default 'utf-8'
@@ -30,6 +30,7 @@ class Wavefront:
     mesh_list : list # All the meshes of the imported object in a list, each containing its vertices/normals/uvs
 
     __file_path : str
+    __calculate_normals : bool
     __mtllibs : list
     __vertices : list
     __normals : list
@@ -39,8 +40,9 @@ class Wavefront:
 
     __parse_dispatch : dict
 
-    def __init__(self, file_path, encoding = 'utf-8') -> None:
+    def __init__(self, file_path, calculate_smooth_normals=False, encoding = 'utf-8') -> None:
         self.__file_path = file_path
+        self.__calculate_smooth_normals = calculate_smooth_normals
         self.__mtllibs = []
         
         self.__vertices = [] # Array with float4 with (x, y, z, w) like [[1.0, 1.0, 1.0, 1.0], [2.0, 1.5, 2.65, 1.0], ...]
@@ -237,7 +239,7 @@ class Wavefront:
         
         for obj_mesh in self.__obj_mesh_list:
 
-            mesh = Mesh.from_objmesh(self.__vertices, self.__normals, self.__texture_coords, obj_mesh)
+            mesh = Mesh.from_objmesh(self.__vertices, self.__normals, self.__texture_coords, obj_mesh, self.__calculate_smooth_normals)
 
             self.mesh_list.append(mesh)
             if mesh.name != "":
