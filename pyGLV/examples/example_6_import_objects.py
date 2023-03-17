@@ -114,12 +114,11 @@ dirname = os.path.dirname(__file__)
 # obj_to_import = os.path.join(dirname, 'models','sphere.obj')
 obj_to_import = os.path.join(dirname, 'models','teapot.obj')
 
-imported_obj = Wavefront(obj_to_import, calculate_smooth_normals=True)
+imported_obj = Wavefront(obj_to_import, calculate_smooth_normals=False)
 
-# mesh_from_obj = imported_obj.meshes['icosphere']
 mesh_from_obj = imported_obj.mesh_list[0]
 
-colors = np.array([[1.0, 0.0, 0.0, 1.0]] * len(mesh_from_obj.vertices)) # Paint sphere red
+colors = np.array([[0.8, 0.8, 0.8, 1.0]] * len(mesh_from_obj.vertices)) # Generate color, because object does not have UVs
 
 # vertices, indices, colors, normals = norm.generateSmoothNormalsMesh(vert , ind, col)
 
