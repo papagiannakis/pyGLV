@@ -1,8 +1,5 @@
 """
-Scene classes, part of pyGLV
-    
-pyGLV (Computer Graphics for Deep Learning and Scientific Visualization)
-@Copyright 2021-2022 Dr. George Papagiannakis
+Scene classes
     
 Singleton class to assemble pyECSS::ECSSManager and pyGLV::Viewer objects
 
@@ -12,12 +9,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-import numpy as np
-
-import pyECSS.utilities as util
-from pyECSS.Entity import Entity, EntityDfsIterator
-from pyECSS.Component import BasicTransform, Camera
-from pyECSS.System import System, TransformSystem, CameraSystem, RenderSystem
 from pyECSS.ECSSManager import ECSSManager
 from pyGLV.GUI.Viewer import SDL2Window, ImGUIDecorator
 

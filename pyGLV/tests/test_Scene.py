@@ -461,7 +461,7 @@ class TestScene(unittest.TestCase):
         self.shaderDec4 = self.scene.world.addComponent(self.node4, ShaderGLDecorator(Shader(vertex_source = Shader.COLOR_VERT_MVP, fragment_source=Shader.COLOR_FRAG)))
         self.shaderDec4.setUniformVariable(key='modelViewProj', value=mvpMat, mat4=True)
 
-        from pyGLV.GL.terrain import generateTerrain
+        from pyGLV.utils.terrain import generateTerrain
         self.vertexTerrain, self.indexTerrain, self.colorTerrain = generateTerrain(size=2,N=5,uniform_color = [0.2,0.2,0.2,1.0])
 
         
@@ -536,7 +536,7 @@ class TestScene(unittest.TestCase):
         self.shaderDec4 = self.scene.world.addComponent(self.node4, ShaderGLDecorator(Shader(vertex_source = Shader.COLOR_VERT_MVP, fragment_source=Shader.COLOR_FRAG)))
         # self.shaderDec4.setUniformVariable(key='modelViewProj', value=mvpMat, mat4=True)
 
-        from pyGLV.GL.terrain import generateTerrain
+        from pyGLV.utils.terrain import generateTerrain
         self.vertexTerrain, self.indexTerrain, self.colorTerrain= generateTerrain(size=2,N=20)
         
         
@@ -694,9 +694,9 @@ class TestScene(unittest.TestCase):
         target = util.vec(0.0, 0.0, 0.0)
         up = util.vec(0.0, 1.0, 0.0)
         view = util.lookat(eye, target, up)
-        # projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-        # projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-        projMat = util.perspective(50.0, 1.0, 1.0, 10.0) ## WORKING 
+        # projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0)  
+        # projMat = util.perspective(90.0, 1.33, 0.1, 100)  
+        projMat = util.perspective(50.0, 1.0, 1.0, 10.0)   
         
         model_terrain_axes = util.translate(0.0,0.0,0.0)
         model_cube = util.scale(0.3) @ util.translate(0.0,0.5,0.0)
@@ -745,7 +745,7 @@ class TestScene(unittest.TestCase):
         
 
         # Generate terrain
-        from pyGLV.GL.terrain import generateTerrain
+        from pyGLV.utils.terrain import generateTerrain
         self.vertexTerrain, self.indexTerrain, self.colorTerrain= generateTerrain(size=4,N=20)
         # Add terrain
         self.terrain = self.scene.world.createEntity(Entity(name="terrain"))
@@ -826,9 +826,9 @@ class TestScene(unittest.TestCase):
         target = util.vec(0.0, 0.0, 0.0)
         up = util.vec(0.0, 1.0, 0.0)
         view = util.lookat(eye, target, up)
-        # projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-        # projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-        projMat = util.perspective(50.0, 1.0, 1.0, 10.0) ## WORKING 
+        # projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0)  
+        # projMat = util.perspective(90.0, 1.33, 0.1, 100)  
+        projMat = util.perspective(50.0, 1.0, 1.0, 10.0)   
         
         gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 

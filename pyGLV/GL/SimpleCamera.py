@@ -1,14 +1,9 @@
 """
-SimpleCamera utility class, part of pyGLV
-    
-pyGLV (Computer Graphics for Deep Learning and Scientific Visualization)
-@Copyright 2021-2022 Dr. George Papagiannakis
+SimpleCamera utility class
     
 Convenience class to assemble an OpenGL camera
 
 """
-
-import imgui
 
 from pyGLV.GL.Scene import Scene # for SimpleCamera
 from pyECSS.Entity import Entity
@@ -16,7 +11,13 @@ import pyECSS.utilities as util
 from pyECSS.Component import BasicTransform, Camera
 
 class SimpleCamera(Entity):
+    """
+    This is a Simple Camera Class, used to store a Camera Entity
+    """
     def __init__(self, name=None, type=None, id=None) -> None:
+        """
+        Initializes  a SimpleCamera Entity
+        """
         super().__init__(name, type, id)
         scene = Scene();
         rootEntity = scene.world.root;
@@ -52,6 +53,9 @@ class SimpleCamera(Entity):
         return self._camera;
 
     def drawSelfGui(self, imgui):
+        """
+        Describes how the simple camera is drawn in the imgui ECCS Tree
+        """
         if imgui.button("Orthograpic") and self._mode == "perspective":
             self._mode = "orthographic";
             self._camera.projMat = util.ortho(self._left, self._right, self._bottom, self._top, self._near, self._far);

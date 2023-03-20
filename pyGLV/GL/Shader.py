@@ -1,8 +1,5 @@
 """
-Shader classes, part of pyGLV
-    
-pyGLV (Computer Graphics for Deep Learning and Scientific Visualization)
-@Copyright 2021-2022 Dr. George Papagiannakis
+Shader classes
     
 The Shader Compoment class is the dedicated to a specific type of data container in the pyECSS Component class
 that of assembling, using and destroying OpenGL API shader programs
@@ -19,17 +16,13 @@ Based on the Composite and Iterator design patterns:
 from __future__         import annotations
 from abc                import ABC, abstractmethod
 from typing             import List
-from collections.abc    import Iterable, Iterator
 import os  
-import sys
 
 import OpenGL.GL as gl
-from OpenGL.GL import shaders
 
-from pyECSS.System import System, RenderSystem, SystemDecorator
-from pyECSS.Component import Component, BasicTransform, Camera, ComponentDecorator, RenderMesh, CompNullIterator, BasicTransformDecorator
-import uuid  
-import pyECSS.utilities as util
+
+from pyECSS.System import System
+from pyECSS.Component import Component, ComponentDecorator, RenderMesh, CompNullIterator
 from pyGLV.GL.VertexArray import VertexArray
 from pyGLV.GL.Textures import Texture, Texture3D
 

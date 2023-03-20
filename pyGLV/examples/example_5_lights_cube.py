@@ -15,9 +15,9 @@ from pyGLV.GL.VertexArray import VertexArray
 from OpenGL.GL import GL_LINES
 import OpenGL.GL as gl
 
-import pyGLV.GL.normals as norm
-from pyGLV.GL.terrain import generateTerrain
-from pyGLV.GL.obj_to_mesh import obj_to_mesh
+import pyGLV.utils.normals as norm
+from pyGLV.utils.terrain import generateTerrain
+from pyGLV.utils.obj_to_mesh import obj_to_mesh
 
 
 #Light
@@ -44,9 +44,9 @@ eye = util.vec(1, 0.54, 1.0)
 target = util.vec(0.02, 0.14, 0.217)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-# projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-projMat = util.perspective(50.0, 1.0, 1.0, 10.0) ## WORKING 
+# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0)  
+# projMat = util.perspective(90.0, 1.33, 0.1, 100)  
+projMat = util.perspective(50.0, 1.0, 1.0, 10.0)   
 
 m = np.linalg.inv(projMat @ view)
 
@@ -201,18 +201,15 @@ eManager._subscribers['OnUpdateWireframe'] = gWindow
 eManager._actuators['OnUpdateWireframe'] = renderGLEventActuator
 eManager._subscribers['OnUpdateCamera'] = gWindow 
 eManager._actuators['OnUpdateCamera'] = renderGLEventActuator
-# MANOS END
-# Add RenderWindow to the EventManager publishers
-# eManager._publishers[updateBackground.name] = gGUI
 
 
 eye = util.vec(2.5, 2.5, 2.5)
 target = util.vec(0.0, 0.0, 0.0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-# projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-projMat = util.perspective(50.0, 1200/800, 0.01, 100.0) ## WORKING 
+# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0)  
+# projMat = util.perspective(90.0, 1.33, 0.1, 100)  
+projMat = util.perspective(50.0, 1200/800, 0.01, 100.0)   
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 

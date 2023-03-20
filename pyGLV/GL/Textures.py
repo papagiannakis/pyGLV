@@ -1,5 +1,10 @@
+"""
+Texture classes
+
+"""
+
+
 import OpenGL.GL as gl
-import numpy as np
 from PIL import Image
 
 class Texture:
@@ -7,7 +12,8 @@ class Texture:
     This Class is used for initializing simple 2D textures
     """
 
-    CUBE_TEX_COORDINATES = [[0.0, 0.0],
+    CUBE_TEX_COORDINATES = [
+    [0.0, 0.0],
     [1.0, 0.0],
     [1.0, 1.0],
     [0.0, 0.0],
@@ -16,6 +22,9 @@ class Texture:
 
 
     def __init__(self,filepath):
+        """
+        Used to initialize a 2D texture
+        """
         angle = -90
 
         img = Image.open(filepath)
@@ -47,10 +56,11 @@ class Texture:
                         )
         gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
     
-    """
+    
+    def bind(self):
+        """
     Bind and Activate texture
     """
-    def bind(self):
         gl.glActiveTexture(gl.GL_TEXTURE0)
         gl.glBindTexture(gl.GL_TEXTURE_2D,self._texture)
 
@@ -62,6 +72,9 @@ class Texture:
 
 
 class texture_data:
+    """
+    A class storing the necessary texture data, such as height, width and data
+    """
 
     def __init__(self,_height,_width,_data):
         self.set_height(_height)
@@ -91,10 +104,11 @@ class Texture3D:
     This Class is used for initializing 3D textures using cube maps
     """
 
-    """
-    texture_faces contains the texture data for all faces
-    """
+
     def __init__(self, texture_faces: list):
+        """
+        Initializes a 3D texture using the texture data for all faces (texture_faces)
+        """
         self._texture = gl.glGenTextures(1)
         gl.glBindTexture(gl.GL_TEXTURE_CUBE_MAP, self._texture)
         
@@ -117,17 +131,17 @@ class Texture3D:
         gl.glTexParameteri(gl.GL_TEXTURE_CUBE_MAP, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
         gl.glTexParameteri(gl.GL_TEXTURE_CUBE_MAP, gl.GL_TEXTURE_WRAP_R, gl.GL_CLAMP_TO_EDGE)
 
-    """
-    Bind and Activate texture
-    """
     def bind(self):
+        """
+        Bind and Activate texture
+        """
         gl.glActiveTexture(gl.GL_TEXTURE0)
         gl.glBindTexture(gl.GL_TEXTURE_CUBE_MAP,self._texture)
 
-    """
-        unbind texture
-    """
     def unbind(self):
+        """
+        unbind texture
+        """
         gl.glDeleteTextures(1,self._texture)
     
 

@@ -25,7 +25,7 @@ from pyGLV.GUI.Viewer import RenderGLStateSystem
 
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
-import pyGLV.GL.normals as norm
+import pyGLV.utils.normals as norm
 from pyGLV.GL.Textures import Texture
 
 from OpenGL.GL import GL_LINES
@@ -136,7 +136,7 @@ class TestScene(unittest.TestCase):
         self.target = util.vec(0.0, 0.0, 0.0)
         self.up = util.vec(0.0, 1.0, 0.0)
         self.view = util.lookat(self.eye, self.target, self.up)
-        self.projMat = util.perspective(50.0, 1.0, 0.01, 10.0) ## WORKING 
+        self.projMat = util.perspective(50.0, 1.0, 0.01, 10.0)   
 
         gWindow._myCamera = self.view # otherwise, an imgui slider must be moved to properly update
 
