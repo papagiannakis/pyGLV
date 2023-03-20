@@ -15,20 +15,14 @@ from math import sin, cos, radians
 from enum import Enum
 from random import uniform;
 import numpy as np
-import imgui
-import sys
-
-
-
 
 import OpenGL.GL as gl;
 import pyECSS.utilities as util
-from pyECSS.System import System, TransformSystem, CameraSystem
+from pyECSS.System import  TransformSystem, CameraSystem
 from pyECSS.Entity import Entity
-from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.Event import Event, EventManager
-from pyGLV.GUI.Viewer import SDL2Window, ImGUIDecorator, RenderGLStateSystem, RenderWindow, ImGUIecssDecorator
-from pyECSS.ECSSManager import ECSSManager
+from pyECSS.Component import BasicTransform,  RenderMesh
+
+from pyGLV.GUI.Viewer import  RenderGLStateSystem,  ImGUIecssDecorator
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
 from pyGLV.GL.Scene import Scene

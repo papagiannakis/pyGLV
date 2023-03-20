@@ -2,8 +2,7 @@ import numpy as np
 
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
-from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.System import TransformSystem, CameraSystem
+from pyECSS.Component import RenderMesh
 from pyGLV.GL.Scene import Scene
 
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
@@ -18,17 +17,14 @@ rootEntity = scene.world.createEntity(Entity(name="RooT"))
 
 entityCam1 = scene.world.createEntity(Entity(name="entityCam1"))
 scene.world.addEntityChild(rootEntity, entityCam1)
-# trans1 = scene.world.addComponent(entityCam1, BasicTransform(name="trans1", trs=util.identity()))
 
 node4 = scene.world.createEntity(Entity(name="node4"))
 scene.world.addEntityChild(rootEntity, node4)
-# trans4 = scene.world.addComponent(node4, BasicTransform(name="trans4", trs=util.identity()))
 mesh4 = scene.world.addComponent(node4, RenderMesh(name="mesh4"))
 
 
 axes = scene.world.createEntity(Entity(name="axes"))
 scene.world.addEntityChild(rootEntity, axes)
-# axes_trans = scene.world.addComponent(axes, BasicTransform(name="axes_trans", trs=util.identity()))
 axes_mesh = scene.world.addComponent(axes, RenderMesh(name="axes_mesh"))
 
 
@@ -94,8 +90,6 @@ shaderDec4.setUniformVariable(key='modelViewProj', value=mvpMat, mat4=True)
 
 
 # Systems
-# transUpdate = scene.world.createSystem(TransformSystem("transUpdate", "TransformSystem", "001"))
-# camUpdate = scene.world.createSystem(CameraSystem("camUpdate", "CameraUpdate", "200"))
 initUpdate = scene.world.createSystem(InitGLShaderSystem())
 renderUpdate = scene.world.createSystem(RenderGLShaderSystem())
 

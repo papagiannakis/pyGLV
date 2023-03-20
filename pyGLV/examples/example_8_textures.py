@@ -1,15 +1,16 @@
 import numpy as np
 import os
+
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
-from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.System import  TransformSystem, CameraSystem
+from pyECSS.Component import BasicTransform,  RenderMesh
+from pyECSS.System import  TransformSystem
 from pyGLV.GL.Scene import Scene
 from pyGLV.GUI.Viewer import RenderGLStateSystem
 
 from pyGLV.GL.Shader import InitGLShaderSystem, Shader, ShaderGLDecorator, RenderGLShaderSystem
 from pyGLV.GL.VertexArray import VertexArray
-import pyGLV.GL.normals as norm
+import pyGLV.utils.normals as norm
 from pyGLV.GL.Textures import Texture
 
 from OpenGL.GL import GL_LINES
@@ -112,7 +113,7 @@ shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_sou
 
 
 # Generate terrain
-from pyGLV.GL.terrain import generateTerrain
+from pyGLV.utils.terrain import generateTerrain
 vertexTerrain, indexTerrain, colorTerrain= generateTerrain(size=4,N=20)
 # Add terrain
 terrain = scene.world.createEntity(Entity(name="terrain"))
@@ -164,18 +165,14 @@ eManager._subscribers['OnUpdateWireframe'] = gWindow
 eManager._actuators['OnUpdateWireframe'] = renderGLEventActuator
 eManager._subscribers['OnUpdateCamera'] = gWindow 
 eManager._actuators['OnUpdateCamera'] = renderGLEventActuator
-# MANOS END
-# Add RenderWindow to the EventManager publishers
-# eManager._publishers[updateBackground.name] = gGUI
-
 
 eye = util.vec(2.5, 2.5, 2.5)
 target = util.vec(0.0, 0.0, 0.0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-# projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-projMat = util.perspective(50.0, 1.0, 0.01, 10.0) ## WORKING 
+# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0)  
+# projMat = util.perspective(90.0, 1.33, 0.1, 100)  
+projMat = util.perspective(50.0, 1.0, 0.01, 10.0)   
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 

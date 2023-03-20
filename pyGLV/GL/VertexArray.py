@@ -1,9 +1,6 @@
 """
 VertexArray class
     
-pyGLV (Computer Graphics for Deep Learning and Scientific Visualization)
-@Copyright 2021-2022 Dr. George Papagiannakis
-    
 The VertexArray Compoment class is the dedicated to a specific type of data container Component
 that of assembling, using and destroying OpenGL API vertex array and buffer objects
 
@@ -19,27 +16,22 @@ Based on the Composite and Iterator design patterns:
 from __future__         import annotations
 from abc                import ABC, abstractmethod
 from typing             import List
-from collections.abc    import Iterable, Iterator
-import ctypes
 
 import OpenGL.GL as gl
-from OpenGL.GL import shaders
 import numpy as np
 
 import pyECSS.System
-from pyECSS.Component import Component, BasicTransform, Camera, RenderMesh, CompNullIterator, BasicTransformDecorator
-import uuid  
-import pyECSS.utilities as util
+from pyECSS.Component import Component, CompNullIterator
 
 
 class VertexArray(Component):
     """
     A concrete VertexArray class
-
-    :param Component: [description]
-    :type Component: [type]
     """
     def __init__(self, name=None, type=None, id=None, attributes=None, index=None, primitive = gl.GL_TRIANGLES, usage=gl.GL_STATIC_DRAW):
+        """
+        Initializes a VertexArray class
+        """
         super().__init__(name, type, id)
         
         
@@ -97,8 +89,6 @@ class VertexArray(Component):
         gl.glDeleteBuffers(len(self._buffers), self._buffers)
     
     def draw(self):
-        # draw a vertex Array as direct array or index array
-        #print(self.getClassName(), ": draw() called")
         
         gl.glBindVertexArray(self._glid)
         self._draw_command(self._primitive, *self._arguments)
@@ -106,7 +96,6 @@ class VertexArray(Component):
         gl.glBindVertexArray(0)
         
     def update(self):
-        #print(self.getClassName(), ": update() called")
         self.draw()
    
     def accept(self, system: pyECSS.System):
@@ -120,7 +109,7 @@ class VertexArray(Component):
     
     def init(self):
         """
-        extra method for extra initialisation pf VertexArray
+        Extra method for extra initialisation pf VertexArray
         Vertex array from attributes and optional index array. 
         Vertex Attributes should be list of arrays with one row per vertex. 
         """
@@ -158,6 +147,7 @@ class VertexArray(Component):
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
     
     def __iter__(self) ->CompNullIterator:
-        """ A component does not have children to iterate, thus a NULL iterator
+        """ 
+        A component does not have children to iterate, thus a NULL iterator
         """
         return CompNullIterator(self) 

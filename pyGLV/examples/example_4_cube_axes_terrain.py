@@ -2,8 +2,8 @@ import numpy as np
 
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
-from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.System import  TransformSystem, CameraSystem
+from pyECSS.Component import BasicTransform, RenderMesh
+from pyECSS.System import  TransformSystem
 from pyGLV.GL.Scene import Scene
 from pyGLV.GUI.Viewer import RenderGLStateSystem
 
@@ -119,7 +119,7 @@ shaderDec4 = scene.world.addComponent(node4, ShaderGLDecorator(Shader(vertex_sou
 
 
 # Generate terrain
-from pyGLV.GL.terrain import generateTerrain
+from pyGLV.utils.terrain import generateTerrain
 vertexTerrain, indexTerrain, colorTerrain= generateTerrain(size=4,N=20)
 # Add terrain
 terrain = scene.world.createEntity(Entity(name="terrain"))
@@ -144,7 +144,7 @@ axes_mesh.vertex_index.append(indexAxes)
 axes_vArray = scene.world.addComponent(axes, VertexArray(primitive=GL_LINES)) # note the primitive change
 
 # shaderDec_axes = scene.world.addComponent(axes, Shader())
-# OR
+## OR
 axes_shader = scene.world.addComponent(axes, ShaderGLDecorator(Shader(vertex_source = Shader.COLOR_VERT_MVP, fragment_source=Shader.COLOR_FRAG)))
 # axes_shader.setUniformVariable(key='modelViewProj', value=mvpMat, mat4=True)
 
@@ -171,26 +171,26 @@ eManager._subscribers['OnUpdateWireframe'] = gWindow
 eManager._actuators['OnUpdateWireframe'] = renderGLEventActuator
 eManager._subscribers['OnUpdateCamera'] = gWindow 
 eManager._actuators['OnUpdateCamera'] = renderGLEventActuator
-# MANOS END
-# Add RenderWindow to the EventManager publishers
-# eManager._publishers[updateBackground.name] = gGUI
 
 
 eye = util.vec(2.5, 2.5, 2.5)
 target = util.vec(0.0, 0.0, 0.0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) ## WORKING
-# projMat = util.perspective(90.0, 1.33, 0.1, 100) ## WORKING
-projMat = util.perspective(50.0, 1.0, 0.01, 10.0) ## WORKING 
+
+projMat = util.perspective(50.0, 1.0, 0.01, 10.0) 
+## OR
+# projMat = util.perspective(90.0, 1.33, 0.1, 100) 
+## OR
+# projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 10.0) 
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 
 
 model_cube = trans4.trs
-# OR
+## OR
 # model_cube = util.scale(0.3) @ util.translate(0.0,0.5,0.0) ## COMPLETELY OVERRIDE OBJECT's TRS
-# OR
+## OR
 # model_cube =  trans4.trs @ util.scale(0.3) @ util.translate(0.0,0.5,0.0) ## TAMPER WITH OBJECT's TRS
 
 model_terrain_axes = terrain.getChild(0).trs # notice that terrain.getChild(0) == terrain_trans
