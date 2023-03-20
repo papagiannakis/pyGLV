@@ -2,8 +2,8 @@ import numpy as np
 import os
 import pyECSS.utilities as util
 from pyECSS.Entity import Entity
-from pyECSS.Component import BasicTransform, Camera, RenderMesh
-from pyECSS.System import  TransformSystem, CameraSystem
+from pyECSS.Component import BasicTransform, RenderMesh
+from pyECSS.System import  TransformSystem
 from pyGLV.GL.Scene import Scene
 from pyGLV.GUI.Viewer import RenderGLStateSystem
 
@@ -128,27 +128,19 @@ eye = util.vec(2.5, 2.5, 2.5)
 target = util.vec(0.0, 0.0, 0.0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
-projMat = util.perspective(50.0, 1.0, 0.01, 100.0) ## WORKING 
+projMat = util.perspective(50.0, 1.0, 0.01, 100.0)   
 
 gWindow._myCamera = view # otherwise, an imgui slider must be moved to properly update
 
-#front_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/front.jpg")
-#right_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/right.jpg")
-#left_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/left.jpg")
-#back_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/back.jpg")
-#bottom_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/bottom.jpg")
-#top_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Sea/top.jpg")
+front_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "front.jpg")
+right_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "right.jpg")
+left_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "left.jpg")
+back_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "back.jpg")
+bottom_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "bottom.jpg")
+top_img = os.path.join(os.path.dirname(__file__), "Skyboxes", "Cloudy", "top.jpg")
 
 
-front_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/front.jpg")
-right_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/right.jpg")
-left_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/left.jpg")
-back_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/back.jpg")
-bottom_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/bottom.jpg")
-top_img = os.path.join(os.path.dirname(__file__), "Skyboxes/Cloudy/top.jpg")
-
-
-mat_img = os.path.join(os.path.dirname(__file__), "textures/dark_wood_texture.jpg")
+mat_img = os.path.join(os.path.dirname(__file__), "textures", "dark_wood_texture.jpg")
 
 face_data = get_texture_faces(front_img,back_img,top_img,bottom_img,left_img,right_img)
 face_data_2 = get_single_texture_faces(mat_img)
