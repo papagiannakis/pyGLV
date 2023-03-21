@@ -34,6 +34,7 @@ setup(
         'scipy',
         'pyECSS',
         'imgui',
+        'pillow',
         'PyOpenGL',
         'PyOpenGL_accelerate',
         'pysdl2',
