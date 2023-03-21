@@ -72,14 +72,14 @@ vArray4 = scene.world.addComponent(node4, VertexArray())
 
 
 
-model = util.translate(0.0,0.0,0.5)
+model = util.translate(0.0,0.0,0.5)@util.scale(3)
 eye = util.vec(1.0, 1.0, 1.0)
 target = util.vec(0,0.0,0)
 up = util.vec(0.0, 1.0, 0.0)
 view = util.lookat(eye, target, up)
 
 # projMat = util.perspective(120.0, 1.33, 0.1, 100.0)
-projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -0.5, 10.0)
+projMat = util.ortho(-10.0, 10.0, -10.0, 10.0, -10, 10.0)
 
 mvpMat =  projMat @ view @ model
 
